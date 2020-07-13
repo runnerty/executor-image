@@ -1,0 +1,113 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "title": "@runnerty-executor-image",
+  "definitions": {
+    "config": {
+      "type": "object",
+      "required": ["id", "type"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "pattern": "@runnerty-executor-image"
+        }
+      }
+    },
+    "params": {
+      "type": "object",
+      "required": ["id", "input", "destination"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "input": {
+          "anyOf": [
+            { "type": "string" },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "destination": {
+          "type": "string"
+        },
+        "failOnError": {
+          "type": "boolean"
+        },
+        "resize": {
+          "type": "object",
+          "items": {
+            "width": {
+              "type": "number"
+            },
+            "height": {
+              "type": "number"
+            },
+            "fit": {
+              "type": "string",
+              "enum": ["cover", "contain", "fill", "inside", "outside", null]
+            },
+            "background": {
+              "anyOf": [{ "type": "string" }, { "type": "object" }]
+            },
+            "withoutEnlargement": {
+              "type": "boolean"
+            },
+            "fastShrinkOnLoad": {
+              "type": "boolean"
+            },
+            "kernel": {
+              "type": "string"
+            }
+          }
+        },
+        "toFormat": {
+          "anyOf": [
+            { "type": "string", "enum": ["jpg", "jpeg", "webp", "png", "tiff", "heif", "raw"] },
+            {
+              "type": "object",
+              "items": {
+                "toFormat": { "type": "string" }
+              }
+            }
+          ]
+        },
+        "quality": {
+          "type": "number"
+        },
+        "flatten": {
+          "type": "object"
+        },
+        "tint": {
+          "type": "string"
+        },
+        "composite": {
+          "type": "array"
+        },
+        "flip": {
+          "type": "boolean"
+        },
+        "flop": {
+          "type": "boolean"
+        },
+        "negate": {
+          "type": "boolean"
+        },
+        "greyscale": {
+          "type": "boolean"
+        },
+        "sharpen": {
+          "type": "boolean"
+        },
+        "optimized": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}
