@@ -1,7 +1,7 @@
 {
   "name": "@runnerty/executor-image",
   "version": "2.0.0",
-  "description": "Runnerty module: HTTP image",
+  "description": "Runnerty module: Image",
   "author": "Coderty",
   "license": "MIT",
   "main": "index.js",
