@@ -76,9 +76,28 @@ class imageExecutor extends Execution {
   async transformImage(file) {
     // Destination
     let outputFile = path.basename(file);
+    let destinationFormat = path.parse(outputFile).ext;
+    let destinationFormatOptions = {};
+
+    //toFormat:
     if (this.options.toFormat) {
-      outputFile = `${path.parse(outputFile).name}.${this.options.toFormat}`;
+      //string:
+      if (typeof this.options.toFormat === 'string') {
+        destinationFormat = this.options.toFormat;
+        if (this.options.quality && !this.options.optimized) {
+          destinationFormatOptions.quality = this.options.quality;
+        }
+        //object:
+      } else if (typeof this.options.toFormat === 'object') {
+        if (!this.options.toFormat.hasOwnProperty('quality') && this.options.quality)
+          this.options.toFormat.quality = this.options.quality;
+        if (this.options.optimized && this.options.toFormat.quality) delete this.options.toFormat.quality;
+        destinationFormat = this.options.toFormat.toFormat;
+        destinationFormatOptions = this.options.toFormat;
+      }
     }
+
+    outputFile = `${path.parse(outputFile).name}.${destinationFormat}`;
     const outputFilePath = path.dirname(file);
     this.finalDestination = await this.generateDestination(this.options.destination, outputFilePath, outputFile);
 
@@ -90,22 +109,8 @@ class imageExecutor extends Execution {
     if (this.options.composite) pipes.push(sharpStream.composite(this.options.composite));
     if (this.options.resize) pipes.push(sharpStream.resize(this.options.resize));
     //toFormat:
-    if (this.options.toFormat) {
-      //string:
-      if (typeof this.options.toFormat === 'string') {
-        let toFormatOptions = {};
-        if (this.options.quality && !this.options.optimized) {
-          toFormatOptions.quality = this.options.quality;
-        }
-        pipes.push(sharpStream.toFormat(this.options.toFormat, toFormatOptions));
-        //object:
-      } else if (typeof this.options.toFormat === 'object') {
-        if (!this.options.toFormat.hasOwnProperty('quality') && this.options.quality)
-          this.options.toFormat.quality = this.options.quality;
-        if (this.options.optimized && this.options.toFormat.quality) delete this.options.toFormat.quality;
-        pipes.push(sharpStream.toFormat(this.options.toFormat.toFormat, this.options.toFormat));
-      }
-    }
+    pipes.push(sharpStream.toFormat(destinationFormat, destinationFormatOptions));
+
     if (this.options.rotate) pipes.push(sharpStream.rotate(this.options.rotate));
     if (this.options.flip) pipes.push(sharpStream.flip());
     if (this.options.flop) pipes.push(sharpStream.flop());
@@ -122,19 +127,24 @@ class imageExecutor extends Execution {
 
     // Optimization
     if (this.options.optimized) {
+      let _plugins = [
+        imageminMozjpeg({ progressive: true, quality: this.options.quality }),
+        imageminPngquant({
+          strip: true,
+          quality: this.qualityPNGCalculate(this.options.quality)
+        }),
+        imageminSvgo({
+          plugins: [{ removeViewBox: false }]
+        })
+      ];
+
+      if (destinationFormat.toUpperCase() === 'WEBP') {
+        _plugins.push(imageminWebp({ quality: this.options.quality }));
+      }
+
       try {
         let optimizedFileOutput = await imagemin([this.finalDestination], {
-          plugins: [
-            imageminMozjpeg({ progressive: true, quality: this.options.quality }),
-            imageminPngquant({
-              strip: true,
-              quality: this.qualityPNGCalculate(this.options.quality)
-            }),
-            imageminSvgo({
-              plugins: [{ removeViewBox: false }]
-            }),
-            imageminWebp({ quality: this.options.quality })
-          ]
+          plugins: _plugins
         });
 
         const fileToOptim = await fs.promises.stat(this.finalDestination);

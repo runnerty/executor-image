@@ -5,7 +5,7 @@
   <p align="center">Smart Processes Management</p>
 </p>
 
-[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Dependency Status][david-badge]][david-badge-url]
+[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url]
 <a href="#badge">
   <img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg">
 </a>
@@ -112,8 +112,6 @@ By default its value is false.
 [downloads-image]: https://img.shields.io/npm/dm/@runnerty/executor-image.svg
 [npm-url]: https://www.npmjs.com/package/@runnerty/executor-image
 [npm-image]: https://img.shields.io/npm/v/@runnerty/executor-image.svg
-[david-badge]: https://david-dm.org/runnerty/executor-image.svg
-[david-badge-url]: https://david-dm.org/runnerty/executor-image
 [sharp]: https://sharp.pixelplumbing.com
 [imagemin]: https://github.com/imagemin/imagemin
 [toFormat]: https://sharp.pixelplumbing.com/api-output#toformat
