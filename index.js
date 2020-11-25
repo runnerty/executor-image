@@ -76,7 +76,7 @@ class imageExecutor extends Execution {
   async transformImage(file) {
     // Destination
     let outputFile = path.basename(file);
-    let destinationFormat = path.parse(outputFile).ext;
+    let destinationFormat = path.parse(outputFile).ext.replace('.', '');
     let destinationFormatOptions = {};
 
     //toFormat:
@@ -109,7 +109,9 @@ class imageExecutor extends Execution {
     if (this.options.composite) pipes.push(sharpStream.composite(this.options.composite));
     if (this.options.resize) pipes.push(sharpStream.resize(this.options.resize));
     //toFormat:
-    pipes.push(sharpStream.toFormat(destinationFormat, destinationFormatOptions));
+    if (this.options.toFormat) {
+      pipes.push(sharpStream.toFormat(destinationFormat, destinationFormatOptions));
+    }
 
     if (this.options.rotate) pipes.push(sharpStream.rotate(this.options.rotate));
     if (this.options.flip) pipes.push(sharpStream.flip());
