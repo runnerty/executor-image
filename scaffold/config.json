@@ -1,0 +1,8 @@
+{
+  "executors": [
+    {
+      "id": "image_default",
+      "type": "@runnerty-executor-image"
+    }
+  ]
+}
