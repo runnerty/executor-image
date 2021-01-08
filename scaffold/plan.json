@@ -1,0 +1,60 @@
+{
+  "$schema": "https://raw.githubusercontent.com/runnerty/schemas/master/schemas/3.0/plan.json",
+  "chains": [
+    {
+      "id": "CHAIN_IMAGE_SAMPLES",
+      "name": "IMAGE module example chain",
+      "defaults_processes": {
+        "notifications": {
+          "on_start": [
+            {
+              "id": "console_default",
+              "message": "@GETDATE('YYYY-MM-DD HH:mm:ss') START: PROCESS @GV(PROCESS_ID)"
+            }
+          ],
+          "on_fail": [
+            {
+              "id": "console_default",
+              "message": "@GETDATE('YYYY-MM-DD HH:mm:ss') ERROR: PROCESS @GV(PROCESS_ID): @GV(PROCESS_EXEC_ERR_OUTPUT)",
+              "mode": "error"
+            }
+          ],
+          "on_end": [
+            {
+              "id": "console_default",
+              "message": "@GETDATE('YYYY-MM-DD HH:mm:ss') END: PROCESS @GV(PROCESS_ID)"
+            }
+          ]
+        }
+      },
+      "processes": [
+        {
+          "id": "COMPOSE_IMG_TO_WEBP",
+          "name": "COMPOSE IMAGES AND EXPORTS TO WEBP",
+          "exec": {
+            "id": "image_default",
+            "input": ["./img_sample/back.png"],
+            "destination": "./",
+            "toFormat": "webp",
+            "optimized": true,
+            "composite": [{ "input": "./img_sample/runnerty.png", "gravity": "center" }],
+            "failOnError": true
+          }
+        },
+        {
+          "id": "RESIZE_OPTIMIZE",
+          "name": "RESIZE AND OPTIMIZE IMAGE",
+          "exec": {
+            "id": "image_default",
+            "input": ["./img_sample/back.png"],
+            "destination": "./",
+            "resize": { "height": 800 },
+            "toFormat": "jpg",
+            "optimized": true,
+            "failOnError": true
+          }
+        }
+      ]
+    }
+  ]
+}

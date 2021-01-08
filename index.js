@@ -13,9 +13,9 @@ const imageminPngquant = require('imagemin-pngquant');
 const imageminSvgo = require('imagemin-svgo');
 const imageminWebp = require('imagemin-webp');
 
-const Execution = global.ExecutionClass;
+const Executor = require('@runnerty/module-core').Executor;
 
-class imageExecutor extends Execution {
+class imageExecutor extends Executor {
   constructor(process) {
     super(process);
     this.finalDestination = '';
