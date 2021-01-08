@@ -30,7 +30,7 @@
     "imagemin-svgo": "8.0.0",
     "imagemin-webp": "6.0.0",
     "concat-stream": "2.0.0",
-    "globby": "11.0.1",
+    "globby": "11.0.2",
     "@runnerty/module-core": "3.0.1"
   },
   "devDependencies": {
