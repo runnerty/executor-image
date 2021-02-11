@@ -1,6 +1,6 @@
 {
   "name": "@runnerty/executor-image",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Runnerty module: Image",
   "author": "Runnerty Tech",
   "license": "MIT",
@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/runnerty/executor-image#readme",
   "dependencies": {
-    "@runnerty/module-core": "~3.0.3",
+    "@runnerty/module-core": "~3.0.4",
     "sharp": "~0.27.1",
     "imagemin": "~7.0.1",
     "imagemin-mozjpeg": "~9.0.0",
