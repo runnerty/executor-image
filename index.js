@@ -102,7 +102,7 @@ class imageExecutor extends Executor {
     this.finalDestination = await this.generateDestination(this.options.destination, outputFilePath, outputFile);
 
     // Transformation:
-    let pipes = [fs.createReadStream(file)];
+    const pipes = [fs.createReadStream(file)];
     const sharpStream = sharp({
       failOnError: false
     }).setMaxListeners(0);
@@ -129,7 +129,7 @@ class imageExecutor extends Executor {
 
     // Optimization
     if (this.options.optimized) {
-      let _plugins = [
+      const _plugins = [
         imageminMozjpeg({ progressive: true, quality: this.options.quality }),
         imageminPngquant({
           strip: true,
@@ -145,7 +145,7 @@ class imageExecutor extends Executor {
       }
 
       try {
-        let optimizedFileOutput = await imagemin([this.finalDestination], {
+        const optimizedFileOutput = await imagemin([this.finalDestination], {
           plugins: _plugins
         });
 
@@ -157,7 +157,7 @@ class imageExecutor extends Executor {
           this.endOptions.msg_output += `${this.finalDestination}: optimized (${fileToOptim.size} to ${optimizedFileOutput[0].data.length}).\n`;
         }
       } catch (error) {
-        throw `optimization: ${error}`;
+        throw new Error(`optimization: ${error}`);
       }
     }
   }
