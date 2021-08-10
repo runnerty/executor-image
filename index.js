@@ -29,7 +29,9 @@ class imageExecutor extends Executor {
       this.options.input = [this.options.input];
     }
     for await (const file of globby.stream(this.options.input)) {
-      await this.transformImage(file).catch(error => {
+      try {
+        await this.transformImage(file);
+      } catch (error) {
         if (this.options.failOnError) {
           this.endOptions.end = 'error';
           this.endOptions.msg_output += `${file}: ${error}\n`;
@@ -38,19 +40,15 @@ class imageExecutor extends Executor {
         } else {
           this.endOptions.msg_output += `${file}: ${error}\n`;
         }
-      });
+      }
     }
     this.end(this.endOptions);
   }
 
   async writeBufferToFile(buffer, file) {
-    try {
-      const fd = await fs.promises.open(file, 'w');
-      await fd.write(buffer);
-      await fd.close(fd);
-    } catch (error) {
-      throw error;
-    }
+    const fd = await fs.promises.open(file, 'w');
+    await fd.write(buffer);
+    await fd.close();
   }
 
   qualityPNGCalculate(quality) {
@@ -66,7 +64,7 @@ class imageExecutor extends Executor {
   async generateDestination(destination, outputFilePath, outputFile) {
     if (destination) {
       const outputDir = destination;
-      !fs.existsSync(outputDir) && fs.mkdirSync(outputDir, { recursive: true });
+      if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
       return path.join(outputDir, outputFile);
     } else {
       return path.join(outputFilePath, outputFile);
@@ -97,7 +95,14 @@ class imageExecutor extends Executor {
       }
     }
 
-    outputFile = `${path.parse(outputFile).name}.${destinationFormat}`;
+    const suffixFilename = this.options.destinationSuffixFilename ? this.options.destinationSuffixFilename : '';
+    const prefixFilename = this.options.destinationPrefixFilename ? this.options.destinationPrefixFilename : '';
+    const fileName = this.options.overrideDestinationFilename
+      ? this.options.overrideDestinationFilename
+      : path.parse(outputFile).name;
+
+    outputFile = `${prefixFilename}${fileName}${suffixFilename}.${destinationFormat}`;
+
     const outputFilePath = path.dirname(file);
     this.finalDestination = await this.generateDestination(this.options.destination, outputFilePath, outputFile);
 
@@ -124,7 +129,7 @@ class imageExecutor extends Executor {
     pipes.push(fs.createWriteStream(this.finalDestination));
 
     // Generate
-    await pipeline(...pipes);
+    await pipeline(pipes);
     this.endOptions.msg_output += `${this.finalDestination}: generated.\n`;
 
     // Optimization

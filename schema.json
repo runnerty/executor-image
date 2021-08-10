@@ -17,7 +17,7 @@
     },
     "params": {
       "type": "object",
-      "required": ["id", "input", "destination"],
+      "required": ["id", "input"],
       "properties": {
         "id": {
           "type": "string"
@@ -38,6 +38,15 @@
         },
         "failOnError": {
           "type": "boolean"
+        },
+        "overrideDestinationFilename": {
+          "type": "string"
+        },
+        "destinationPrefixFilename": {
+          "type": "string"
+        },
+        "destinationSuffixFilename": {
+          "type": "string"
         },
         "resize": {
           "type": "object",

@@ -48,7 +48,7 @@
             "id": "image_default",
             "input": ["./img_sample/back.png"],
             "destination": "./",
-            "resize": { "height": 800 },
+            "resize": { "height": 800, "withoutEnlargement": true },
             "toFormat": "jpg",
             "optimized": true,
             "failOnError": true

@@ -98,6 +98,9 @@ Add in [plan.json]:
   "id": "image_default",
   "input": ["workspace/*.png"],
   "destination": "/workspace/watermark",
+  "overrideDestinationFilename": "customname",
+  "destinationPrefixFilename": "pre_",
+  "destinationSuffixFilename": "_sub",
   "toFormat": "webp",
   "optimized": true,
   "composite": [{ "input": "/workspace/runnerty.png", "gravity": "center", "blend": "soft-light" }]
