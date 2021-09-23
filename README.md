@@ -24,18 +24,18 @@ Through NPM
 npm i @runnerty/executor-image
 ```
 
-You can also add modules to your project with [runnerty-cli]
+You can also add modules to your project with [runnerty]
 
 ```bash
-npx runnerty-cli add @runnerty/executor-image
+npx runnerty add @runnerty/executor-image
 ```
 
-This command installs the module in your project, adds example configuration in your `config.json` and creates an example plan of use.
+This command installs the module in your project, adds example configuration in your [config.json] and creates an example plan of use.
 
-If you have installed [runnerty-cli] globally you can include the module with this command:
+If you have installed [runnerty] globally you can include the module with this command:
 
 ```bash
-rty add @runnerty/executor-image
+runnerty add @runnerty/executor-image
 ```
 
 ### Configuration:
@@ -131,7 +131,7 @@ If you enable the `failOnError` parameter, the process will stop when any error 
 This may be recommended if you are only going to work on a single image at a time.
 By default its value is false.
 
-[runnerty]: http://www.runnerty.io
+[runnerty]: https://www.runnerty.io
 [downloads-image]: https://img.shields.io/npm/dm/@runnerty/executor-image.svg
 [npm-url]: https://www.npmjs.com/package/@runnerty/executor-image
 [npm-image]: https://img.shields.io/npm/v/@runnerty/executor-image.svg
@@ -140,4 +140,3 @@ By default its value is false.
 [toformat]: https://sharp.pixelplumbing.com/api-output#toformat
 [config.json]: http://docs.runnerty.io/config/
 [plan.json]: http://docs.runnerty.io/plan/
-[runnerty-cli]: https://www.npmjs.com/package/runnerty-cli
